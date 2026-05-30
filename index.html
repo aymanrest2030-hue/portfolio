@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INES Ruhengeri - Official Portal</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+}
+
+/* NAV */
+nav{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    padding:15px;
+    background:#111827;
+    position:sticky;
+    top:0;
+}
+
+nav button{
+    padding:10px 12px;
+    border:none;
+    background:#3b82f6;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+nav button:hover{
+    transform:scale(1.05);
+}
+
+/* SECTIONS */
+section{
+    display:none;
+    max-width:1000px;
+    margin:auto;
+    padding:50px 20px;
+}
+
+.active{
+    display:block;
+}
+
+/* HERO */
+.hero img{
+    width:100%;
+    max-height:400px;
+    object-fit:cover;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+/* BOX */
+.box{
+    background:#111827;
+    padding:15px;
+    border-radius:12px;
+    margin:10px 0;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:#111827;
+    border-radius:12px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.card p{
+    padding:10px;
+}
+
+/* INPUT */
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    border-radius:8px;
+}
+
+/* TOAST */
+#toast{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#22c55e;
+    color:white;
+    padding:12px 20px;
+    border-radius:8px;
+    opacity:0;
+    transition:0.4s;
+    z-index:9999;
+}
+</style>
+</head>
+
+<body>
+
+<div id="toast">✔ Done</div>
+
+<!-- NAV -->
+<nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('system')">SmartGate</button>
+    <button onclick="show('campus')">Campus</button>
+    <button onclick="show('departments')">Departments</button>
+    <button onclick="show('gpa')">GPA</button>
+    <button onclick="show('contact')">Contact</button>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+<h1>INES RUHENGERI</h1>
+<p>Official University Portal</p>
+
+<img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=60" width="900" height="800">
+</section>
+
+<!-- SMARTGATE -->
+<section id="system">
+<h2>SmartGate System</h2>
+
+<div class="box">
+<input id="sg_name" placeholder="Full Name">
+<input id="sg_reg" placeholder="Reg Number">
+<input id="sg_email" placeholder="Email">
+
+<button onclick="register()">Register</button>
+</div>
+</section>
+
+<!-- CAMPUS -->
+<section id="campus">
+<h2>Campus Life</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=60">
+<p>Administration</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=60">
+<p>Lecture Hall</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=60">
+<p>Library</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1558021212-51b6ecfa0db9?auto=format&fit=crop&w=800&q=60">
+<p>Computer Lab</p>
+</div>
+
+</div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section id="departments">
+<h2>Departments</h2>
+
+<div class="box">Computer Science</div>
+<div class="box">IT</div>
+<div class="box">Software Engineering</div>
+<div class="box">Business</div>
+<div class="box">Education</div>
+<div class="box">Environmental Science</div>
+<div class="box">Electrical Engineering</div>
+<div class="box">Health Sciences</div>
+
+</section>
+
+<!-- GPA -->
+<section id="gpa">
+<h2>Student GPA System</h2>
+
+<div class="box">
+<input id="mark" type="number" placeholder="Enter Mark (0-100)">
+<button onclick="calcGPA()">Check</button>
+<h3 id="result"></h3>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<h2>Contact</h2>
+
+<div class="box">
+<input id="c_name" placeholder="Name">
+<input id="c_email" placeholder="Email">
+<textarea id="c_msg" placeholder="Message"></textarea>
+<button onclick="sendContact()">Send</button>
+</div>
+</section>
+
+<script>
+
+/* PAGE SWITCH */
+function show(id){
+    document.querySelectorAll("section").forEach(s=>{
+        s.classList.remove("active");
+    });
+    document.getElementById(id).classList.add("active");
+}
+
+/* TOAST */
+function showToast(msg){
+    let t = document.getElementById("toast");
+    t.innerHTML = msg;
+    t.style.opacity = "1";
+
+    setTimeout(()=>{
+        t.style.opacity = "0";
+    },2000);
+}
+
+/* SMARTGATE */
+function register(){
+
+    let name = sg_name.value.trim();
+    let reg = sg_reg.value.trim();
+    let email = sg_email.value.trim();
+
+    if(!name || !reg || !email){
+        alert("Fill all fields");
+        return;
+    }
+
+    showToast("✔ Registered Successfully");
+
+    sg_name.value="";
+    sg_reg.value="";
+    sg_email.value="";
+}
+
+/* CONTACT */
+function sendContact(){
+
+    let name = c_name.value.trim();
+    let email = c_email.value.trim();
+    let msg = c_msg.value.trim();
+
+    if(!name || !email || !msg){
+        alert("Fill all fields");
+        return;
+    }
+
+    showToast("✔ Message Sent");
+
+    c_name.value="";
+    c_email.value="";
+    c_msg.value="";
+}
+
+/* GPA */
+function calcGPA(){
+
+    let mark = Number(document.getElementById("mark").value);
+    let res = document.getElementById("result");
+
+    if(isNaN(mark)){
+        res.innerHTML = "Enter valid mark";
+        return;
+    }
+
+    let gpa = (mark/100)*4;
+
+    if(mark >= 50){
+        res.innerHTML = "✔ PASS <br> GPA: " + gpa.toFixed(2);
+    }else{
+        res.innerHTML = "❌ FAIL <br> GPA: " + gpa.toFixed(2);
+    }
+}
+
+</script>
+
+</body>
+</html>
