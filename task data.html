@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Innovation Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #00d4ff;
+            --accent: #ff6584;
+            --dark-bg: #0a0a1a;
+            --card-bg: rgba(255,255,255,0.05);
+            --card-border: rgba(255,255,255,0.1);
+            --text-color: #ffffff;
+            --text-sec: #a0a0b0;
+            --grad1: linear-gradient(135deg,#6c63ff,#00d4ff);
+            --grad2: linear-gradient(135deg,#ff6584,#6c63ff);
+            --shadow-s: 0 8px 32px rgba(0,0,0,0.3);
+            --shadow-g: 0 0 20px rgba(108,99,255,0.3);
+        }
+        .light-mode {
+            --dark-bg: #f5f7fa;
+            --card-bg: rgba(255,255,255,0.7);
+            --card-border: rgba(0,0,0,0.1);
+            --text-color: #333333;
+            --text-sec: #666666;
+            --shadow-s: 0 8px 32px rgba(0,0,0,0.1);
+            --shadow-g: 0 0 20px rgba(108,99,255,0.1);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Inter',sans-serif;
+            background:var(--dark-bg);
+            color:var(--text-color);
+            line-height:1.6;
+            overflow-x:hidden;
+            transition:background .3s,color .3s;
+        }
+        body.arabic{font-family:'Cairo',sans-serif;}
+        .preloader{
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:var(--dark-bg);display:flex;justify-content:center;align-items:center;
+            z-index:9999;transition:opacity .5s,visibility .5s;
+        }
+        .preloader.hidden{opacity:0;visibility:hidden;}
+        .preloader-spinner{
+            width:60px;height:60px;border:3px solid rgba(108,99,255,0.2);
+            border-radius:50%;border-top-color:var(--primary);animation:spin 1s linear infinite;
+        }
+        @keyframes spin{to{transform:rotate(360deg);}}
+        .scroll-progress{
+            position:fixed;top:0;left:0;width:0%;height:3px;
+            background:var(--grad1);z-index:1000;transition:width .1s;
+        }
+        .back-to-top{
+            position:fixed;bottom:30px;right:30px;width:50px;height:50px;
+            border-radius:50%;background:var(--grad1);color:#fff;border:none;
+            cursor:pointer;display:flex;justify-content:center;align-items:center;
+            font-size:18px;z-index:100;opacity:0;visibility:hidden;
+            transition:opacity .3s,visibility .3s,transform .3s;box-shadow:var(--shadow-g);
+        }
+        .back-to-top.visible{opacity:1;visibility:visible;}
+        .back-to-top:hover{transform:translateY(-5px);}
+        .navbar{
+            position:fixed;top:0;left:0;width:100%;padding:20px 5%;
+            display:flex;justify-content:space-between;align-items:center;
+            z-index:1000;background:rgba(10,10,26,0.8);backdrop-filter:blur(10px);
+            transition:background .3s,padding .3s;
+        }
+        .light-mode .navbar{background:rgba(245,247,250,0.8);}
+        .navbar.scrolled{padding:15px 5%;box-shadow:var(--shadow-s);}
+        .logo{
+            font-size:24px;font-weight:700;
+            background:var(--grad1);-webkit-background-clip:text;
+            background-clip:text;color:transparent;
+        }
+        .nav-links{display:flex;align-items:center;gap:30px;}
+        .nav-links a{
+            color:var(--text-color);text-decoration:none;font-weight:500;
+            transition:color .3s;position:relative;
+        }
+        .nav-links a::after{
+            content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;
+            background:var(--grad1);transition:width .3s;
+        }
+        .nav-links a:hover::after{width:100%;}
+        .nav-controls{display:flex;align-items:center;gap:15px;}
+        .theme-toggle,.lang-toggle{
+            background:var(--card-bg);border:1px solid var(--card-border);
+            color:var(--text-color);padding:8px 12px;border-radius:20px;
+            cursor:pointer;font-size:14px;transition:background .3s,border .3s;
+            font-family:inherit;
+        }
+        .theme-toggle:hover,.lang-toggle:hover{
+            background:rgba(108,99,255,0.2);border-color:var(--primary);
+        }
+        .hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px;}
+        .hamburger span{
+            width:25px;height:2px;background:var(--text-color);transition:all .3s;
+        }
+        .hero{
+            height:100vh;display:flex;justify-content:center;align-items:center;
+            text-align:center;padding:0 5%;position:relative;overflow:hidden;
+        }
+        .hero-bg{
+            position:absolute;top:0;left:0;width:100%;height:100%;
+            background:radial-gradient(circle at center,rgba(108,99,255,0.1),transparent);
+            z-index:-1;
+        }
+        .hero-particles{position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;}
+        .particle{
+            position:absolute;border-radius:50%;opacity:0.3;
+            animation:float linear infinite;
+        }
+        @keyframes float{
+            0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+            10%{opacity:0.3;}
+            90%{opacity:0.3;}
+            100%{transform:translateY(-10vh) rotate(720deg);opacity:0;}
+        }
+        .hero-content{max-width:800px;z-index:1;}
+        .hero-title{font-size:3.5rem;font-weight:700;margin-bottom:20px;line-height:1.2;}
+        .hero-subtitle{
+            font-size:1.2rem;color:var(--text-sec);margin-bottom:30px;
+            max-width:600px;margin-left:auto;margin-right:auto;
+        }
+        .hero-buttons{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+        .btn-primary,.btn-secondary{
+            padding:12px 30px;border-radius:30px;font-weight:600;font-size:16px;
+            cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;
+        }
+        .btn-primary{
+            background:var(--grad1);color:#fff;border:none;box-shadow:var(--shadow-g);
+        }
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(108,99,255,0.5);}
+        .btn-secondary{
+            background:transparent;color:var(--text-color);border:2px solid var(--primary);
+        }
+        .btn-secondary:hover{background:rgba(108,99,255,0.1);transform:translateY(-3px);}
+        section{padding:100px 5%;}
+        .section-title{font-size:2.5rem;font-weight:700;text-align:center;margin-bottom:20px;}
+        .section-subtitle{color:var(--text-sec);text-align:center;max-width:600px;margin:0 auto 50px;}
+        .problem-content{
+            max-width:900px;margin:0 auto;background:var(--card-bg);
+            border:1px solid var(--card-border);border-radius:20px;padding:40px;
+            backdrop-filter:blur(10px);box-shadow:var(--shadow-s);
+        }
+        .problem-text{font-size:1.1rem;line-height:1.8;}
+        .ai-solutions{background:rgba(108,99,255,0.05);}
+        .ai-input-container{max-width:800px;margin:0 auto 40px;}
+        .ai-textarea{
+            width:100%;min-height:150px;padding:20px;border-radius:15px;
+            border:1px solid var(--card-border);background:var(--card-bg);
+            color:var(--text-color);font-family:inherit;font-size:16px;
+            resize:vertical;transition:border-color .3s;
+        }
+        .ai-textarea:focus{outline:none;border-color:var(--primary);}
+        .ai-button{
+            display:block;margin:20px auto 0;padding:12px 30px;
+            background:var(--grad1);color:#fff;border:none;border-radius:30px;
+            font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;
+            box-shadow:var(--shadow-g);font-family:inherit;
+        }
+        .ai-button:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(108,99,255,0.5);}
+        .ai-loading{display:none;text-align:center;margin:30px 0;}
+        .ai-loading.active{display:block;}
+        .ai-loading-spinner{
+            display:inline-block;width:40px;height:40px;
+            border:3px solid rgba(108,99,255,0.2);border-radius:50%;
+            border-top-color:var(--primary);animation:spin 1s linear infinite;
+        }
+        .ai-loading-text{margin-top:10px;color:var(--text-sec);}
+        .ai-solutions-container{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:30px;max-width:1200px;margin:0 auto;
+        }
+        .ai-solution-card{
+            background:var(--card-bg);border:1px solid var(--card-border);
+            border-radius:15px;padding:30px;backdrop-filter:blur(10px);
+            box-shadow:var(--shadow-s);opacity:0;transform:translateY(20px);
+            animation:fadeInUp .5s forwards;
+        }
+        .ai-solution-card:nth-child(2){animation-delay:.2s;}
+        .ai-solution-card:nth-child(3){animation-delay:.4s;}
+        .ai-solution-card:nth-child(4){animation-delay:.6s;}
+        .ai-solution-card:nth-child(5){animation-delay:.8s;}
+        @keyframes fadeInUp{to{opacity:1;transform:translateY(0);}}
+        .ai-solution-icon{font-size:2rem;margin-bottom:15px;color:var(--secondary);}
+        .ai-solution-title{font-size:1.2rem;font-weight:600;margin-bottom:10px;}
+        .ai-solution-text{color:var(--text-sec);line-height:1.6;}
+        .solution-grid{
+            display:grid;grid-template-columns:1fr 1fr;gap:50px;
+            max-width:1200px;margin:0 auto;align-items:center;
+        }
+        .solution-image{border-radius:20px;overflow:hidden;box-shadow:var(--shadow-s);}
+        .solution-image img{width:100%;height:auto;display:block;transition:transform .5s;}
+        .solution-image:hover img{transform:scale(1.05);}
+        .solution-content h3{font-size:1.8rem;margin-bottom:20px;}
+        .solution-content p{color:var(--text-sec);margin-bottom:20px;line-height:1.8;}
+        .value-cards{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:30px;max-width:1200px;margin:0 auto;
+        }
+        .value-card{
+            background:var(--card-bg);border:1px solid var(--card-border);
+            border-radius:20px;padding:40px;text-align:center;
+            backdrop-filter:blur(10px);box-shadow:var(--shadow-s);
+            transition:transform .3s,box-shadow .3s;
+        }
+        .value-card:hover{transform:translateY(-10px);box-shadow:0 0 30px rgba(108,99,255,0.2);}
+        .value-icon{font-size:3rem;margin-bottom:20px;color:var(--primary);}
+        .value-title{font-size:1.3rem;font-weight:600;margin-bottom:15px;}
+        .value-text{color:var(--text-sec);line-height:1.6;}
+        .team-grid{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:30px;max-width:1200px;margin:0 auto;
+        }
+        .team-card{
+            background:var(--card-bg);border:1px solid var(--card-border);
+            border-radius:20px;overflow:hidden;backdrop-filter:blur(10px);
+            box-shadow:var(--shadow-s);transition:transform .3s,box-shadow .3s;
+        }
+        .team-card:hover{transform:translateY(-10px);box-shadow:0 0 30px rgba(108,99,255,0.2);}
+        .team-image{height:200px;overflow:hidden;}
+        .team-image img{
+            width:100%;height:100%;object-fit:cover;transition:transform .5s;
+        }
+        .team-card:hover .team-image img{transform:scale(1.1);}
+        .team-info{padding:25px;}
+        .team-name{font-size:1.2rem;font-weight:600;margin-bottom:5px;}
+        .team-role{color:var(--primary);font-weight:500;margin-bottom:15px;}
+        .team-bio{color:var(--text-sec);font-size:.9rem;line-height:1.6;margin-bottom:15px;}
+        .team-contribution{padding-top:15px;border-top:1px solid var(--card-border);font-size:.9rem;}
+        .team-contribution-title{font-weight:600;margin-bottom:5px;}
+        .team-contribution-text{color:var(--text-sec);}
+        .contact-container{
+            max-width:800px;margin:0 auto;background:var(--card-bg);
+            border:1px solid var(--card-border);border-radius:20px;padding:40px;
+            backdrop-filter:blur(10px);box-shadow:var(--shadow-s);
+        }
+        .form-group{margin-bottom:20px;}
+        .form-label{display:block;margin-bottom:8px;font-weight:500;}
+        .form-input,.form-textarea{
+            width:100%;padding:12px 15px;border-radius:10px;
+            border:1px solid var(--card-border);background:var(--card-bg);
+            color:var(--text-color);font-family:inherit;font-size:16px;
+            transition:border-color .3s;
+        }
+        .form-input:focus,.form-textarea:focus{outline:none;border-color:var(--primary);}
+        .form-textarea{min-height:150px;resize:vertical;}
+        .form-error{color:var(--accent);font-size:14px;margin-top:5px;display:none;}
+        .form-submit{
+            width:100%;padding:15px;background:var(--grad1);color:#fff;border:none;
+            border-radius:30px;font-size:16px;font-weight:600;cursor:pointer;
+            transition:all .3s;box-shadow:var(--shadow-g);font-family:inherit;
+        }
+        .form-submit:hover{transform:translateY(-3px);box-shadow:0 0 30px rgba(108,99,255,0.5);}
+        .form-success{
+            display:none;text-align:center;padding:20px;
+            background:rgba(0,212,255,0.1);border-radius:10px;margin-top:20px;
+            color:var(--secondary);
+        }
+        footer{padding:30px 5%;text-align:center;border-top:1px solid var(--card-border);}
+        .footer-text{color:var(--text-sec);font-size:14px;}
+        .footer-links{display:flex;justify-content:center;gap:20px;margin-top:15px;}
+        .footer-link{color:var(--text-sec);font-size:20px;transition:color .3s;}
+        .footer-link:hover{color:var(--primary);}
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;}
+        .reveal.active{opacity:1;transform:translateY(0);}
+        @media(max-width:992px){
+            .solution-grid{grid-template-columns:1fr;}
+        }
+        @media(max-width:768px){
+            .nav-links{
+                position:fixed;top:0;right:-100%;width:70%;height:100vh;
+                background:var(--dark-bg);flex-direction:column;justify-content:center;
+                padding:20px;transition:right .3s;
+            }
+            .light-mode .nav-links{background:var(--dark-bg);}
+            .nav-links.active{right:0;}
+            body.arabic .nav-links{right:auto;left:-100%;}
+            body.arabic .nav-links.active{left:0;}
+            .hamburger{display:flex;}
+            .hero-title{font-size:2.5rem;}
+            .section-title{font-size:2rem;}
+        }
+        @media(max-width:576px){
+            .hero-title{font-size:2rem;}
+            .hero-buttons{flex-direction:column;align-items:center;}
+            .btn-primary,.btn-secondary{width:100%;max-width:300px;text-align:center;}
+            .back-to-top{bottom:20px;right:20px;width:45px;height:45px;}
+        }
+    </style>
+</head>
+<body>
+   
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">Team Innovation</div>
+        <div class="nav-links" id="navLinks">
+            <a href="#hero" data-en="Home" data-ar="الرئيسية">Home</a>
+            <a href="#problem" data-en="Problem" data-ar="المشكلة">Problem</a>
+            <a href="#ai-solutions" data-en="AI Solutions" data-ar="حلول الذكاء">AI Solutions</a>
+            <a href="#solution" data-en="Solution" data-ar="الحل">Solution</a>
+            <a href="#value" data-en="Value" data-ar="القيمة">Value</a>
+            <a href="#team" data-en="Team" data-ar="الفريق">Team</a>
+            <a href="#contact" data-en="Contact" data-ar="اتصل بنا">Contact</a>
+        </div>
+        <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+            <button class="lang-toggle" id="langToggle" aria-label="Toggle Language">العربية</button>
+            <div class="hamburger" id="hamburger" aria-label="Toggle Menu"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" data-en="Revolutionizing Problem Solving with AI" data-ar="ثورة في حل المشكلات بالذكاء الاصطناعي">Revolutionizing Problem Solving with AI</h1>
+            <p class="hero-subtitle" data-en="Our innovative platform leverages artificial intelligence to generate creative solutions to complex challenges facing businesses and individuals." data-ar="منصتنا المبتكرة تستفيد من الذكاء الاصطناعي لتوليد حلول إبداعية للتحديات المعقدة التي تواجه الأفراد والمؤسسات.">Our innovative platform leverages artificial intelligence to generate creative solutions to complex challenges facing businesses and individuals.</p>
+            <div class="hero-buttons">
+                <a href="#ai-solutions" class="btn-primary" data-en="Try AI Solutions" data-ar="جرب حلول الذكاء">Try AI Solutions</a>
+                <a href="#solution" class="btn-secondary" data-en="Learn More" data-ar="اعرف المزيد">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="problem" id="problem">
+        <h2 class="section-title reveal" data-en="The Problem" data-ar="المشكلة">The Problem</h2>
+        <p class="section-subtitle reveal" data-en="Understanding the challenges we face in modern problem-solving" data-ar="فهم التحديات التي نواجهها في حل المشكلات الحديثة">Understanding the challenges we face in modern problem-solving</p>
+        <div class="problem-content reveal">
+            <p class="problem-text" data-en="In today's fast-paced world, individuals and organizations constantly face complex problems that require innovative solutions. Traditional problem-solving methods often fall short when dealing with multifaceted challenges that span multiple domains. The sheer volume of information available can be overwhelming, making it difficult to identify the most effective approaches." data-ar="في عالم سريع التغير اليوم، يواجه الأفراد والمؤسسات باستمرار مشكلات معقدة تتطلب حلولاً مبتكرة. غالباً ما تقصر أساليب حل المشكلات التقليدية عند التعامل مع التحديات متعددة الأوجه التي تمتد عبر مجالات متعددة. يمكن أن تكون كمية المعلومات المتاحة ساحقة، مما يجعل من الصعب تحديد أكثر النهج فعالية.">In today's fast-paced world, individuals and organizations constantly face complex problems that require innovative solutions. Traditional problem-solving methods often fall short when dealing with multifaceted challenges that span multiple domains. The sheer volume of information available can be overwhelming, making it difficult to identify the most effective approaches.</p>
+            <br>
+            <p class="problem-text" data-en="Additionally, cognitive biases and limited perspectives can narrow the solution space, preventing people from seeing alternative approaches that might be more effective. This leads to suboptimal decisions, wasted resources, and missed opportunities for innovation and growth." data-ar="بالإضافة إلى ذلك، يمكن أن تحد من الانحيازات المعرفية والمنظورات المحدودة مساحة الحلول، مما يمنع الناس من رؤية النهج البديلة التي قد تكون أكثر فعالية. هذا يؤدي إلى قرارات دون المستوى الأمثل، وإهدار للموارد، وضياع فرص الابتكار والنمو.">Additionally, cognitive biases and limited perspectives can narrow the solution space, preventing people from seeing alternative approaches that might be more effective. This leads to suboptimal decisions, wasted resources, and missed opportunities for innovation and growth.</p>
+        </div>
+    </section>
+
+    <!-- AI Solutions -->
+    <section class="ai-solutions" id="ai-solutions">
+        <h2 class="section-title reveal" data-en="AI-Powered Solutions" data-ar="حلول مدعومة بالذكاء الاصطناعي">AI-Powered Solutions</h2>
+        <p class="section-subtitle reveal" data-en="Describe your problem and let our AI generate creative solutions" data-ar="صف مشكلتك ودع ذكاءنا الاصطناعي يولد حلولاً إبداعية">Describe your problem and let our AI generate creative solutions</p>
+        <div class="ai-input-container reveal">
+            <textarea class="ai-textarea" id="problemInput" data-en-placeholder="Describe your problem..." data-ar-placeholder="اكتب المشكلة التي تواجهها..." placeholder="Describe your problem..."></textarea>
+            <button class="ai-button" id="generateSolutions" data-en="Generate Solutions" data-ar="اقترح حلول">Generate Solutions</button>
+        </div>
+        <div class="ai-loading" id="aiLoading">
+            <div class="ai-loading-spinner"></div>
+            <p class="ai-loading-text" data-en="AI is analyzing your problem..." data-ar="الذكاء الاصطناعي يحلل مشكلتك...">AI is analyzing your problem...</p>
+        </div>
+        <div class="ai-solutions-container" id="aiSolutionsContainer"></div>
+    </section>
+
+    <!-- Solution -->
+    <section class="solution" id="solution">
+        <h2 class="section-title reveal" data-en="Our Solution" data-ar="حلنا">Our Solution</h2>
+        <p class="section-subtitle reveal" data-en="How we are transforming problem-solving" data-ar="كيف نحول حل المشكلات">How we are transforming problem-solving</p>
+        <div class="solution-grid">
+            <div class="solution-image reveal">
+                <img src="https://picsum.photos/seed/innovation42/600/400.jpg" alt="Innovation">
+            </div>
+            <div class="solution-content reveal">
+                <h3 data-en="AI-Powered Problem Analysis" data-ar="تحليل المشكلات المدعوم بالذكاء الاصطناعي">AI-Powered Problem Analysis</h3>
+                <p data-en="Our platform uses advanced artificial intelligence algorithms to analyze problems from multiple perspectives, identifying patterns and connections that humans might miss. By processing vast amounts of data and drawing from diverse knowledge domains, our AI generates comprehensive, creative solutions tailored to each unique challenge." data-ar="تستخدم منصتنا خوارزميات ذكاء اصطناعي متقدمة لتحليل المشكلات من زوايا متعددة، وتحديد الأنماط والاتصالات التي قد يفوتها البشر. من خلال معالجة كميات هائلة من البيانات والاستفادة من مجالات المعرفة المتنوعة، يقوم الذكاء الاصطناعي بتوليد حلول شاملة وإبداعية مصممة لكل تحد فريد.">Our platform uses advanced artificial intelligence algorithms to analyze problems from multiple perspectives, identifying patterns and connections that humans might miss. By processing vast amounts of data and drawing from diverse knowledge domains, our AI generates comprehensive, creative solutions tailored to each unique challenge.</p>
+                <p data-en="Unlike traditional approaches, our AI combines elements from design thinking, systems theory, and creative problem-solving techniques to provide a holistic approach to any challenge." data-ar="على عكس الأساليب التقليدية، يجمع ذكاؤنا الاصطناعي بين عناصر التفكير التصميمي ونظرية الأنظمة وتقنيات حل المشكلات الإبداعية لتقديم نهج شامل لأي تحد.">Unlike traditional approaches, our AI combines elements from design thinking, systems theory, and creative problem-solving techniques to provide a holistic approach to any challenge.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value -->
+    <section class="value" id="value">
+        <h2 class="section-title reveal" data-en="Value Proposition" data-ar="عرض القيمة">Value Proposition</h2>
+        <p class="section-subtitle reveal" data-en="Key benefits of our AI-powered solution" data-ar="الفوائد الرئيسية لحلنا المدعوم بالذكاء الاصطناعي">Key benefits of our AI-powered solution</p>
+        <div class="value-cards">
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3 class="value-title" data-en="Innovative Solutions" data-ar="حلول مبتكرة">Innovative Solutions</h3>
+                <p class="value-text" data-en="Generate creative and unconventional approaches by leveraging AI's ability to connect disparate ideas across domains and industries." data-ar="توليد مناهج إبداعية وغير تقليدية من خلال الاستفادة من قدرة الذكاء الاصطناعي على ربط الأفكار المتباينة عبر المجالات والصناعات.">Generate creative and unconventional approaches by leveraging AI's ability to connect disparate ideas across domains and industries.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fas fa-clock"></i></div>
+                <h3 class="value-title" data-en="Time Efficiency" data-ar="كفاءة الوقت">Time Efficiency</h3>
+                <p class="value-text" data-en="Reduce hours of brainstorming and research to minutes. Our AI rapidly processes information to deliver multiple solution options instantly." data-ar="تقليل ساعات العصف الذهني والبحث إلى دقائق. يقوم الذكاء الاصطناعي بمعالجة المعلومات بسرعة لتقديم خيارات حل متعددة فوراً.">Reduce hours of brainstorming and research to minutes. Our AI rapidly processes information to deliver multiple solution options instantly.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                <h3 class="value-title" data-en="Expanded Perspective" data-ar="منظور موسع">Expanded Perspective</h3>
+                <p class="value-text" data-en="Overcome cognitive biases and limited viewpoints by accessing AI-generated solutions that consider multiple angles and possibilities." data-ar="التغلب على الانحيازات المعرفية وجهات النظر المحدودة من خلال الوصول إلى حلول يولدها الذكاء الاصطناعي تأخذ في الاعتبار زوايا وإمكانيات متعددة.">Overcome cognitive biases and limited viewpoints by accessing AI-generated solutions that consider multiple angles and possibilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team" id="team">
+        <h2 class="section-title reveal" data-en="Our Team" data-ar="فريقنا">Our Team</h2>
+        <p class="section-subtitle reveal" data-en="Meet the brilliant minds behind our innovation" data-ar="تعرف على العقول الرائعة وراء ابتكارنا">Meet the brilliant minds behind our innovation</p>
+        <div class="team-grid">
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person1a/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="Sarah Johnson" data-ar="سارة جونسون">Sarah Johnson</h3>
+                    <p class="team-role" data-en="CEO & Founder" data-ar="المديرة التنفيذية والمؤسسة">CEO & Founder</p>
+                    <p class="team-bio" data-en="Former AI researcher at MIT with 10+ years in machine learning and natural language processing." data-ar="باحثة سابقة في الذكاء الاصطناعي بمعهد ماساتشوستس مع أكثر من 10 سنوات في التعلم الآلي ومعالجة اللغات الطبيعية.">Former AI researcher at MIT with 10+ years in machine learning and natural language processing.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="Vision and strategic direction" data-ar="الرؤية والتوجه الاستراتيجي">Vision and strategic direction</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person2b/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="Michael Chen" data-ar="مايكل تشن">Michael Chen</h3>
+                    <p class="team-role" data-en="CTO" data-ar="المدير التقني">CTO</p>
+                    <p class="team-bio" data-en="Full-stack engineer specializing in scalable AI systems and cloud architecture." data-ar="مهندس متكامل متخصص في أنظمة الذكاء الاصطناعي القابلة للتوسع وهندسة السحابة.">Full-stack engineer specializing in scalable AI systems and cloud architecture.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="Technical architecture and AI implementation" data-ar="الهندسة المعمارية وتنفيذ الذكاء الاصطناعي">Technical architecture and AI implementation</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person3c/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="Emma Rodriguez" data-ar="إيما رودريغيز">Emma Rodriguez</h3>
+                    <p class="team-role" data-en="Head of AI Research" data-ar="رئيسة أبحاث الذكاء الاصطناعي">Head of AI Research</p>
+                    <p class="team-bio" data-en="PhD in AI from Stanford with published research on creative problem-solving algorithms." data-ar="دكتوراه في الذكاء الاصطناعي من ستانفورد مع أبحاث منشورة حول خوارزميات حل المشكلات الإبداعية.">PhD in AI from Stanford with published research on creative problem-solving algorithms.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="Proprietary solution generation algorithms" data-ar="خوارزميات توليد الحلول الخاصة">Proprietary solution generation algorithms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person4d/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="James Wilson" data-ar="جيمس ويلسون">James Wilson</h3>
+                    <p class="team-role" data-en="Product Designer" data-ar="مصمم المنتجات">Product Designer</p>
+                    <p class="team-bio" data-en="Award-winning UX designer focused on intuitive interfaces for AI-powered tools." data-ar="مصمم تجربة مستخدم حائز على جوائز يركز على واجهات بديهية لأدوات الذكاء الاصطناعي.">Award-winning UX designer focused on intuitive interfaces for AI-powered tools.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="User experience and interface design" data-ar="تصميم تجربة المستخدم والواجهة">User experience and interface design</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person5e/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="Aisha Patel" data-ar="عائشة باتل">Aisha Patel</h3>
+                    <p class="team-role" data-en="Data Scientist" data-ar="عالمة بيانات">Data Scientist</p>
+                    <p class="team-bio" data-en="Specialist in NLP and knowledge graphs with experience building intelligent recommendation systems." data-ar="متخصصة في معالجة اللغات الطبيعية ورسم البيانات المعرفية مع خبرة في بناء أنظمة التوصية الذكية.">Specialist in NLP and knowledge graphs with experience building intelligent recommendation systems.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="Data processing and relevance optimization" data-ar="معالجة البيانات وتحسين الصلة">Data processing and relevance optimization</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-image"><img src="https://picsum.photos/seed/person6f/400/300.jpg" alt="Team Member"></div>
+                <div class="team-info">
+                    <h3 class="team-name" data-en="David Kim" data-ar="ديفيد كيم">David Kim</h3>
+                    <p class="team-role" data-en="Business Development" data-ar="تطوير الأعمال">Business Development</p>
+                    <p class="team-bio" data-en="MBA from Harvard with 8+ years scaling tech startups and building strategic partnerships." data-ar="ماجستير إدارة أعمال من هارفارد مع أكثر من 8 سنوات في توسيع الشركات الناشئة التقنية وبناء الشراكات الاستراتيجية.">MBA from Harvard with 8+ years scaling tech startups and building strategic partnerships.</p>
+                    <div class="team-contribution">
+                        <p class="team-contribution-title" data-en="Key Contribution" data-ar="المساهمة الرئيسية">Key Contribution</p>
+                        <p class="team-contribution-text" data-en="Market strategy and partnerships" data-ar="استراتيجية السوق والشراكات">Market strategy and partnerships</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2 class="section-title reveal" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h2>
+        <p class="section-subtitle reveal" data-en="Have questions or want to learn more? We would love to hear from you." data-ar="هل لديك أسئلة أو تريد معرفة المزيد؟ نود أن نسمع منك.">Have questions or want to learn more? We would love to hear from you.</p>
+        <div class="contact-container reveal">
+            <form id="contactForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="nameInput" data-en="Name" data-ar="الاسم">Name</label>
+                    <input type="text" class="form-input" id="nameInput" required>
+                    <p class="form-error" id="nameError" data-en="Please enter your name" data-ar="يرجى إدخال اسمك">Please enter your name</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="emailInput" data-en="Email" data-ar="البريد الإلكتروني">Email</label>
+                    <input type="email" class="form-input" id="emailInput" required>
+                    <p class="form-error" id="emailError" data-en="Please enter a valid email" data-ar="يرجى إدخال بريد إلكتروني صالح">Please enter a valid email</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="messageInput" data-en="Message" data-ar="الرسالة">Message</label>
+                    <textarea class="form-textarea" id="messageInput" required></textarea>
+                    <p class="form-error" id="messageError" data-en="Please enter your message" data-ar="يرجى إدخال رسالتك">Please enter your message</p>
+                </div>
+                <button type="submit" class="form-submit" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
+                <div class="form-success" id="formSuccess" data-en="Your message has been sent successfully!" data-ar="تم إرسال رسالتك بنجاح!">Your message has been sent successfully!</div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text" data-en="2024 Team Innovation Portfolio. All rights reserved." data-ar="2024 محفظة فريق الابتكار. جميع الحقوق محفوظة.">2024 Team Innovation Portfolio. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#" class="footer-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="footer-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="footer-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="footer-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to Top"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        /* ===== Preloader ===== */
+        window.addEventListener('load', function() {
+            document.getElementById('preloader').classList.add('hidden');
+        });
+
+        /* ===== Particles ===== */
+        (function createParticles() {
+            var container = document.getElementById('heroParticles');
+            var colors = ['#6c63ff', '#00d4ff', '#ff6584'];
+            for (var i = 0; i < 30; i++) {
+                var p = document.createElement('div');
+                p.className = 'particle';
+                var size = Math.random() * 6 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(p);
+            }
+        })();
+
+        /* ===== Scroll Progress ===== */
+        window.addEventListener('scroll', function() {
+            var scrollTop = window.scrollY;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            document.getElementById('scrollProgress').style.width = pct + '%';
+        });
+
+        /* ===== Back to Top ===== */
+        var backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            backBtn.classList.toggle('visible', window.scrollY > 500);
+        });
+        backBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        /* ===== Navbar Scroll ===== */
+        window.addEventListener('scroll', function() {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        /* ===== Hamburger Menu ===== */
+        var hamburger = document.getElementById('hamburger');
+        var navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() { navLinks.classList.remove('active'); });
+        });
+
+        /* ===== Theme Toggle ===== */
+        var themeToggle = document.getElementById('themeToggle');
+        var savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            var isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeToggle.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        /* ===== Language Toggle ===== */
+        var langToggle = document.getElementById('langToggle');
+        var htmlEl = document.documentElement;
+        var savedLang = localStorage.getItem('language') || 'en';
+
+        function applyLang(lang) {
+            htmlEl.setAttribute('lang', lang);
+            htmlEl.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.body.classList.toggle('arabic', lang === 'ar');
+            langToggle.textContent = lang === 'ar' ? 'English' : 'العربية';
+            document.querySelectorAll('[data-' + lang + ']').forEach(function(el) {
+                var tag = el.tagName;
+                if (tag === 'INPUT' || tag === 'TEXTAREA') {
+                    el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || '';
+                } else {
+                    el.textContent = el.getAttribute('data-' + lang) || '';
+                }
+            });
+        }
+        applyLang(savedLang);
+
+        langToggle.addEventListener('click', function() {
+            var newLang = htmlEl.getAttribute('lang') === 'en' ? 'ar' : 'en';
+            localStorage.setItem('language', newLang);
+            applyLang(newLang);
+        });
+
+        /* ===== AI Solutions Engine ===== */
+        var solutionsDB = {
+            business: {
+                en: [
+                    { icon: 'fas fa-chart-line', title: 'Data-Driven Decision Making', text: 'Implement advanced analytics tools to gather insights from your business data, enabling more informed and strategic decisions that improve efficiency and profitability.' },
+                    { icon: 'fas fa-users', title: 'Customer-Centric Approach', text: 'Develop a deep understanding of your customers through research and feedback mechanisms, then align your products and services to better meet their needs.' },
+                    { icon: 'fas fa-cogs', title: 'Process Optimization', text: 'Analyze and streamline your business processes to eliminate inefficiencies, reduce costs, and improve overall productivity through automation.' },
+                    { icon: 'fas fa-handshake', title: 'Strategic Partnerships', text: 'Form alliances with complementary businesses to expand your market reach, share resources, and create mutually beneficial growth opportunities.' },
+                    { icon: 'fas fa-lightbulb', title: 'Innovation Culture', text: 'Foster an environment that encourages creativity and experimentation, allowing your team to develop new ideas that differentiate your business.' }
+                ],
+                ar: [
+                    { icon: 'fas fa-chart-line', title: 'اتخاذ قرارات مبنية على البيانات', text: 'تنفيذ أدوات تحليل متقدمة لجمع رؤى من بيانات عملك، مما يتيح اتخاذ قرارات أكثر استنارة واستراتيجية تحسن الكفاءة والربحية.' },
+                    { icon: 'fas fa-users', title: 'نهج يركز على العميل', text: 'تطوير فهم عميق لعملائك من خلال البحث وآليات التغذية الراجعة، ثم محاذاة منتجاتك وخدماتك لتلبية احتياجاتهم بشكل أفضل.' },
+                    { icon: 'fas fa-cogs', title: 'تحسين العمليات', text: 'تحليل وتبسيط عمليات عملك للقضاء على عدم الكفاءة وتقليل التكاليف وتحسين الإنتاجية العامة من خلال الأتمتة.' },
+                    { icon: 'fas fa-handshake', title: 'الشراكات الاستراتيجية', text: 'تشكيل تحالفات مع الأعمال التكميلية لتوسيع نطاق وصولك إلى السوق ومشاركة الموارد وخلق فرص نمو مفيدة للطرفين.' },
+                    { icon: 'fas fa-lightbulb', title: 'ثقافة الابتكار', text: 'تعزيز بيئة تشجع الإبداع والتجريب، مما يسمح لفريقك بتطوير أفكار جديدة تميز عملك في السوق.' }
+                ]
+            },
+            technology: {
+                en: [
+                    { icon: 'fas fa-shield-alt', title: 'Enhanced Security Measures', text: 'Implement multi-layered security protocols including encryption, authentication systems, and regular security audits to protect your digital assets.' },
+                    { icon: 'fas fa-server', title: 'Scalable Architecture', text: 'Design your systems with scalability in mind, using cloud services and microservices to handle growth without performance degradation.' },
+                    { icon: 'fas fa-robot', title: 'AI Integration', text: 'Incorporate artificial intelligence to automate repetitive tasks, provide intelligent insights, and enhance user experiences through personalization.' },
+                    { icon: 'fas fa-mobile-alt', title: 'Multi-Platform Compatibility', text: 'Ensure your technology works seamlessly across different devices and platforms using responsive design and cross-platform frameworks.' },
+                    { icon: 'fas fa-code', title: 'Open Source Adoption', text: 'Leverage open-source solutions to reduce development costs, benefit from community-driven innovation, and maintain flexibility.' }
+                ],
+                ar: [
+                    { icon: 'fas fa-shield-alt', title: 'تدابير أمنية معززة', text: 'تنفيذ بروتوكولات أمنية متعددة الطبقات بما في ذلك التشفير وأنظمة المصادقة والتدقيقات الأمنية لحماية أصولك الرقمية.' },
+                    { icon: 'fas fa-server', title: 'هندسة معمارية قابلة للتوسع', text: 'تصميم أنظمتك مع مراعاة قابلية التوسع باستخدام خدمات السحابة والخدمات المصغرة للتعامل مع النمو دون تدهور الأداء.' },
+                    { icon: 'fas fa-robot', title: 'دمج الذكاء الاصطناعي', text: 'دمج قدرات الذكاء الاصطناعي لأتمتة المهام المتكررة وتقديم رؤى ذكية وتعزيز تجارب المستخدم من خلال التخصيص.' },
+                    { icon: 'fas fa-mobile-alt', title: 'توافق متعدد المنصات', text: 'التأكد من أن تقنيتك تعمل بسلاسة عبر مختلف الأجهزة والمنصات باستخدام التصميم المتجاوب وأطر التطوير المتعددة.' },
+                    { icon: 'fas fa-code', title: 'تبني المصادر المفتوحة', text: 'الاستفادة من حلول المصادر المفتوحة لتقليل تكاليف التطوير والاستفادة من الابتكار الجماعي والحفاظ على المرونة.' }
+                ]
+            },
+            marketing: {
+                en: [
+                    { icon: 'fas fa-bullhorn', title: 'Content Marketing Strategy', text: 'Develop valuable, relevant content that addresses your audience pain points, establishing your brand as a thought leader and driving organic traffic.' },
+                    { icon: 'fas fa-search', title: 'SEO Optimization', text: 'Improve your website visibility in search results through keyword research, on-page optimization, and building quality backlinks.' },
+                    { icon: 'fas fa-share-alt', title: 'Social Media Engagement', text: 'Build an active presence on relevant platforms where your audience spends time, fostering conversations and creating shareable content.' },
+                    { icon: 'fas fa-envelope', title: 'Email Marketing Automation', text: 'Implement segmented email campaigns with personalized content triggered by user behavior to nurture leads and maintain engagement.' },
+                    { icon: 'fas fa-chart-bar', title: 'Performance Analytics', text: 'Track and analyze key marketing metrics to understand what works, allowing you to allocate resources effectively and optimize ROI.' }
+                ],
+                ar: [
+                    { icon: 'fas fa-bullhorn', title: 'استراتيجية تسويق المحتوى', text: 'تطوير محتوى قيم وذو صلة يعالج نقاط ألم جمهورك، وإنشاء علامتك التجارية كقائد فكري وجذب زيارات عضوية.' },
+                    { icon: 'fas fa-search', title: 'تحسين محركات البحث', text: 'تحسين ظهور موقعك في نتائج البحث من خلال بحث الكلمات الرئيسية والتحسين على الصفحة وبناء روابط عالية الجودة.' },
+                    { icon: 'fas fa-share-alt', title: 'التفاعل على وسائل التواصل', text: 'بناء حضور نشط على المنصات ذات الصلة حيث يقضي جمهورك الوقت وتعزيز المحادثات وإنشاء محتوى قابل للمشاركة.' },
+                    { icon: 'fas fa-envelope', title: 'أتمتة التسويق بالبريد الإلكتروني', text: 'تنفيذ حملات بريد إلكتروني مجزأة مع محتوى مخصص بناءً على سلوك المستخدم لرعاية العملاء المحتملين والحفاظ على التفاعل.' },
+                    { icon: 'fas fa-chart-bar', title: 'تحليلات الأداء', text: 'تتبع وتحليل مقاييس التسويق الرئيسية لفهم ما ينجح مما يسمح بتخصيص الموارد بفعالية وتحسين العائد على الاستثمار.' }
+                ]
+            },
+            productivity: {
+                en: [
+                    { icon: 'fas fa-tasks', title: 'Task Prioritization System', text: 'Implement a structured approach to prioritizing tasks based on impact and urgency, ensuring focus on high-value activities.' },
+                    { icon: 'fas fa-clock', title: 'Time Blocking Method', text: 'Organize your schedule into dedicated blocks for specific activities, minimizing context switching and improving focus.' },
+                    { icon: 'fas fa-ban', title: 'Distraction Elimination', text: 'Identify and remove common distractions in your work environment, creating focused periods for deeper concentration.' },
+                    { icon: 'fas fa-sync-alt', title: 'Workflow Automation', text: 'Automate repetitive tasks using appropriate tools and technologies, freeing up time for more valuable creative work.' },
+                    { icon: 'fas fa-brain', title: 'Energy Management', text: 'Align your most important tasks with peak energy levels and incorporate regular breaks for sustainable high performance.' }
+                ],
+                ar: [
+                    { icon: 'fas fa-tasks', title: 'نظام أولوية المهام', text: 'تنفيذ نهج منظم لأولوية المهام بناءً على التأثير والضرورة لضمان التركيز على الأنشطة عالية القيمة.' },
+                    { icon: 'fas fa-clock', title: 'طريقة حظر الوقت', text: 'تنظيم جدولك في كتل وقت مخصصة لأنشطة محددة لتقليل تبديل السياق وتحسين التركيز.' },
+                    { icon: 'fas fa-ban', title: 'القضاء على التشتت', text: 'تحديد وإزالة التشتت الشائع في بيئة العمل وخلق فترات عمل مركزة لتركيز أعمق.' },
+                    { icon: 'fas fa-sync-alt', title: 'أتمتة سير العمل', text: 'أتمتة المهام المتكررة باستخدام الأدوات والتقنيات المناسبة لتحرير الوقت لعمل إبداعي أكثر قيمة.' },
+                    { icon: 'fas fa-brain', title: 'إدارة الطاقة', text: 'محاذاة أهم مهامك مع مستويات الطاقة القصوى ودمج استراحات منتظمة لأداء عالٍ مستدام.' }
+                ]
+            },
+            general: {
+                en: [
+                    { icon: 'fas fa-question-circle', title: 'Root Cause Analysis', text: 'Dig deeper to identify the underlying causes of your problem rather than just addressing symptoms, using techniques like the 5 Whys.' },
+                    { icon: 'fas fa-random', title: 'Perspective Shifting', text: 'Approach the problem from different angles by considering how various stakeholders might view it or applying frameworks from unrelated fields.' },
+                    { icon: 'fas fa-divide', title: 'Problem Decomposition', text: 'Break down complex problems into smaller, manageable components to tackle each part systematically toward a comprehensive solution.' },
+                    { icon: 'fas fa-project-diagram', title: 'Systems Thinking', text: 'Consider the broader system in which your problem exists, understanding interrelationships and how changes in one area affect others.' },
+                    { icon: 'fas fa-drafting-compass', title: 'Design Thinking Approach', text: 'Apply the five stages of design thinking—empathize, define, ideate, prototype, and test—to develop user-centered solutions.' }
+                ],
+                ar: [
+                    { icon: 'fas fa-question-circle', title: 'تحليل السبب الجذري', text: 'الحفر أعمق لتحديد الأسباب الكامنة وراء مشكلتك بدلاً من معالجة الأعراض باستخدام تقنيات مثل لماذا الخمس.' },
+                    { icon: 'fas fa-random', title: 'تحول المنظور', text: 'التعامل مع المشكلة من زوايا مختلفة من خلال النظر في كيفية رؤية أصحاب المصلحة المختلفين لها أو تطبيق أطر من مجالات غير ذات صلة.' },
+                    { icon: 'fas fa-divide', title: 'تفكيك المشكلة', text: 'تفكيك المشكلات المعقدة إلى مكونات أصغر وأكثر قابلية للإدارة للتعامل مع كل جزء بشكل منهجي نحو حل شامل.' },
+                    { icon: 'fas fa-project-diagram', title: 'التفكير النظامي', text: 'النظر في النظام الأوسع الذي توجد فيه مشكلتك وفهم العلاقات المتبادلة وكيف تؤثر التغييرات في منطقة واحدة على المناطق الأخرى.' },
+                    { icon: 'fas fa-drafting-compass', title: 'نهج التفكير التصميمي', text: 'تطبيق المراحل الخمس للتفكير التصميمي—التعاطف والتعريف والتفكير والنموذج الأولي والاختبار—لتطوير حلول تركز على المستخدم.' }
+                ]
+            }
+        };
+
+        var categoryKeywords = {
+            business: ['business','company','revenue','profit','customer','sales','market','startup','growth','entrepreneur','تجارة','شركة','إيرادات','أرباح','عميل','مبيعات','سوق','نمو','مؤسسة'],
+            technology: ['technology','software','app','website','digital','data','system','security','programming','تكنولوجيا','برمجيات','تطبيق','موقع','رقمي','بيانات','نظام','أمان','برمجة','حاسوب'],
+            marketing: ['marketing','brand','advertising','social media','content','seo','campaign','audience','traffic','تسويق','علامة تجارية','إعلان','وسائل التواصل','محتوى','حملة','جمهور','زيارات'],
+            productivity: ['productivity','time management','efficiency','focus','distraction','workload','deadline','procrastination','إنتاجية','إدارة الوقت','كفاءة','تركيز','إلهاء','عبء عمل','موعد نهائي','تسويف']
+        };
+
+        function categorizeProblem(text) {
+            var lower = text.toLowerCase();
+            for (var cat in categoryKeywords) {
+                var keywords = categoryKeywords[cat];
+                for (var i = 0; i < keywords.length; i++) {
+                    if (lower.indexOf(keywords[i]) !== -1) return cat;
+                }
+            }
+            return 'general';
+        }
+
+        function downloadFile(text) {
+            var blob = new Blob([text], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'task data.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('generateSolutions').addEventListener('click', function() {
+            var problemText = document.getElementById('problemInput').value.trim();
+            var lang = htmlEl.getAttribute('lang');
+            if (!problemText) {
+                alert(lang === 'ar' ? 'يرجى إدخال مشكلة لتوليد الحلول' : 'Please enter a problem to generate solutions');
+                return;
+            }
+            localStorage.setItem('userProblem', problemText);
+            downloadFile(problemText);
+
+            document.getElementById('aiLoading').classList.add('active');
+            document.getElementById('aiSolutionsContainer').innerHTML = '';
+
+            setTimeout(function() {
+                document.getElementById('aiLoading').classList.remove('active');
+                var cat = categorizeProblem(problemText);
+                var pool = solutionsDB[cat][lang];
+                var count = Math.floor(Math.random() * 3) + 3;
+                var shuffled = pool.slice().sort(function() { return 0.5 - Math.random(); });
+                var picked = shuffled.slice(0, count);
+                var container = document.getElementById('aiSolutionsContainer');
+                container.innerHTML = '';
+                picked.forEach(function(s) {
+                    var card = document.createElement('div');
+                    card.className = 'ai-solution-card';
+                    card.innerHTML = '<div class="ai-solution-icon"><i class="' + s.icon + '"></i></div>' +
+                        '<h3 class="ai-solution-title">' + s.title + '</h3>' +
+                        '<p class="ai-solution-text">' + s.text + '</p>';
+                    container.appendChild(card);
+                });
+            }, 2000);
+        });
+
+        /* ===== Contact Form ===== */
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var lang = htmlEl.getAttribute('lang');
+            var nameVal = document.getElementById('nameInput').value.trim();
+            var emailVal = document.getElementById('emailInput').value.trim();
+            var msgVal = document.getElementById('messageInput').value.trim();
+            var valid = true;
+
+            document.getElementById('nameError').style.display = nameVal ? 'none' : 'block';
+            if (!nameVal) valid = false;
+
+            var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+            document.getElementById('emailError').style.display = emailOk ? 'none' : 'block';
+            if (!emailOk) valid = false;
+
+            document.getElementById('messageError').style.display = msgVal ? 'none' : 'block';
+            if (!msgVal) valid = false;
+
+            if (valid) {
+                var messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.push({ name: nameVal, email: emailVal, message: msgVal, time: new Date().toISOString() });
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                document.getElementById('formSuccess').style.display = 'block';
+                this.reset();
+                setTimeout(function() { document.getElementById('formSuccess').style.display = 'none'; }, 5000);
+            }
+        });
+
+        /* ===== Scroll Reveal ===== */
+        function handleReveal() {
+            var items = document.querySelectorAll('.reveal');
+            for (var i = 0; i < items.length; i++) {
+                var top = items[i].getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) {
+                    items[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', handleReveal);
+        window.addEventListener('load', handleReveal);
+
+        /* ===== Smooth Scroll ===== */
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
