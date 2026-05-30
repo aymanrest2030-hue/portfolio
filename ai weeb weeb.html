@@ -1,0 +1,698 @@
+<!DOCTYPE html><html lang="ar" dir="rtl" style=""><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Innovation Portfolio | فريق الابتكار</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050818;
+  --bg2: #0a1128;
+  --bg3: #0d1535;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(99,102,241,0.4);
+  --primary: #6366f1;
+  --primary2: #818cf8;
+  --accent: #06b6d4;
+  --accent2: #22d3ee;
+  --pink: #ec4899;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --glow: rgba(99,102,241,0.3);
+  --glow2: rgba(6,182,212,0.2);
+  --heading-font: 'Poppins', 'Tajawal', sans-serif;
+  --body-font: 'Tajawal', 'Poppins', sans-serif;
+  --radius: 16px;
+  --radius2: 24px;
+}
+.light-mode {
+  --bg: #f8faff;
+  --bg2: #eef2ff;
+  --bg3: #e8edff;
+  --surface: rgba(99,102,241,0.05);
+  --surface2: rgba(99,102,241,0.1);
+  --border: rgba(99,102,241,0.15);
+  --border2: rgba(99,102,241,0.4);
+  --text: #0f172a;
+  --text2: #334155;
+  --text3: #64748b;
+  --glow: rgba(99,102,241,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--body-font);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;transition:background 0.4s,color 0.4s}
+
+/* PRELOADER */
+#preloader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.5s,visibility 0.5s}
+#preloader.hidden{opacity:0;visibility:hidden}
+.preloader-logo{font-family:var(--heading-font);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.preloader-bar{width:200px;height:3px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.preloader-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;animation:fillBar 1.8s ease-in-out forwards}
+@keyframes fillBar{to{width:100%}}
+
+/* SCROLL PROGRESS */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--pink));z-index:1001;width:0%;transition:width 0.1s linear;border-radius:0 2px 2px 0}
+
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:2rem;left:2rem;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(20px);transition:all 0.3s;z-index:900;box-shadow:0 4px 20px var(--glow)}
+#back-top.visible{opacity:1;transform:translateY(0)}
+#back-top svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+#back-top:hover{transform:translateY(-3px);box-shadow:0 8px 30px var(--glow)}
+
+/* NAVBAR */
+nav{position:fixed;top:0;width:100%;z-index:998;padding:1.2rem 0;transition:all 0.4s}
+nav.scrolled{background:rgba(5,8,24,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.8rem 0}
+.light-mode nav.scrolled{background:rgba(248,250,255,0.85)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--heading-font);font-weight:800;font-size:1.3rem;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.3s;position:relative;padding-bottom:4px}
+.nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width 0.3s;border-radius:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:0.8rem}
+#theme-toggle{background:var(--surface2);border:1px solid var(--border);border-radius:50px;padding:0.4rem 0.8rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;color:var(--text2);font-size:0.8rem;transition:all 0.3s}
+#theme-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(5,8,24,0.97);backdrop-filter:blur(20px);z-index:997;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--text);font-size:1.5rem;font-weight:700;text-decoration:none;font-family:var(--heading-font);transition:color 0.3s}
+.mobile-menu a:hover{color:var(--primary)}
+
+/* SECTIONS */
+section{padding:6rem 2rem;position:relative}
+.container{max-width:1200px;margin:0 auto}
+.section-tag{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface2);border:1px solid var(--border2);border-radius:99px;padding:0.4rem 1.2rem;font-size:0.78rem;font-weight:600;color:var(--primary2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.5rem}
+.section-tag svg{width:12px;height:12px;fill:var(--accent)}
+h2.section-title{font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1rem}
+.grad-text{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-sub{color:var(--text2);font-size:clamp(1rem,1.5vw,1.1rem);max-width:580px;margin:0 auto 3.5rem}
+
+/* HERO */
+#home{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 2rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.15}
+.orb1{width:600px;height:600px;background:var(--primary);top:-200px;right:-200px;animation:float1 8s ease-in-out infinite}
+.orb2{width:500px;height:500px;background:var(--accent);bottom:-200px;left:-200px;animation:float2 10s ease-in-out infinite}
+.orb3{width:300px;height:300px;background:var(--pink);top:50%;right:30%;animation:float3 7s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,40px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,30px)}}
+.grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(99,102,241,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.06) 1px,transparent 1px);background-size:60px 60px}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface2);border:1px solid var(--border2);border-radius:99px;padding:0.5rem 1.2rem;font-size:0.8rem;color:var(--accent2);margin-bottom:2rem;animation:fadeUp 0.8s ease forwards}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s infinite}
+h1.hero-title{font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-0.04em;margin-bottom:1.5rem;animation:fadeUp 0.8s 0.15s ease both}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.25rem);color:var(--text2);max-width:620px;margin:0 auto 2.5rem;animation:fadeUp 0.8s 0.3s ease both}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.8s 0.45s ease both}
+.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.85rem 2rem;border-radius:50px;font-weight:600;font-size:0.95rem;text-decoration:none;cursor:pointer;border:none;transition:all 0.3s;font-family:var(--body-font)}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 4px 25px var(--glow)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 35px var(--glow)}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.btn-outline:hover{background:var(--surface2);border-color:var(--primary);transform:translateY(-3px)}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;animation:fadeUp 0.8s 0.6s ease both;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:var(--heading-font);font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:0.8rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+
+/* PROBLEM */
+#problem{background:var(--bg2)}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-top:3rem}
+.prob-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:2rem;transition:all 0.4s;position:relative;overflow:hidden}
+.prob-card::before{content:'';position:absolute;top:0;right:0;width:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary));transition:width 0.4s}
+.prob-card:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.prob-card:hover::before{width:100%}
+.prob-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
+.prob-icon svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2}
+.prob-card h3{font-family:var(--heading-font);font-size:1.1rem;font-weight:700;margin-bottom:0.6rem}
+.prob-card p{color:var(--text2);font-size:0.9rem;line-height:1.7}
+
+/* SOLUTION */
+#solution .sol-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:2rem}
+.sol-text .section-tag{margin-bottom:1rem}
+.sol-text h2{font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1.2rem}
+.sol-text p{color:var(--text2);font-size:1rem;margin-bottom:1.5rem}
+.sol-points{list-style:none;display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
+.sol-points li{display:flex;align-items:center;gap:0.8rem;color:var(--text2);font-size:0.95rem}
+.sol-points li::before{content:'';width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.sol-mockup{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:2.5rem;position:relative;overflow:hidden}
+.sol-mockup::before{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,var(--glow) 0%,transparent 70%)}
+.mockup-header{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+.mockup-dot{width:12px;height:12px;border-radius:50%}
+.mockup-dot:nth-child(1){background:#ff5f57}
+.mockup-dot:nth-child(2){background:#febc2e}
+.mockup-dot:nth-child(3){background:#28c840}
+.mockup-line{height:8px;border-radius:4px;background:var(--surface2);margin-bottom:0.8rem}
+.mockup-line.w80{width:80%}
+.mockup-line.w60{width:60%}
+.mockup-line.w90{width:90%}
+.mockup-line.w40{width:40%}
+.mockup-bars{display:flex;gap:0.8rem;align-items:flex-end;height:80px;margin-top:1.5rem}
+.bar{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--primary),var(--accent))}
+
+/* VALUE */
+#value{background:var(--bg2)}
+.value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1rem}
+.val-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:2.5rem 2rem;text-align:center;transition:all 0.4s;position:relative;overflow:hidden}
+.val-card::after{content:'';position:absolute;inset:0;opacity:0;border-radius:var(--radius2);background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(6,182,212,0.05));transition:opacity 0.4s}
+.val-card:hover{transform:translateY(-8px);border-color:var(--border2);box-shadow:0 25px 50px rgba(0,0,0,0.3),0 0 0 1px rgba(99,102,241,0.2)}
+.val-card:hover::after{opacity:1}
+.val-icon-wrap{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--accent));margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px var(--glow)}
+.val-icon-wrap svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:2}
+.val-card h3{font-family:var(--heading-font);font-size:1.15rem;font-weight:700;margin-bottom:0.7rem}
+.val-card p{color:var(--text2);font-size:0.9rem;line-height:1.7}
+
+/* TEAM */
+#team{text-align:center}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:1rem}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:2rem;text-align:center;transition:all 0.4s;cursor:pointer;position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(6,182,212,0.06));opacity:0;transition:opacity 0.4s}
+.team-card:hover{transform:translateY(-10px) scale(1.01);border-color:var(--border2);box-shadow:0 30px 60px rgba(0,0,0,0.3),0 0 0 1px rgba(99,102,241,0.3),0 0 40px rgba(99,102,241,0.1)}
+.team-card:hover::before{opacity:1}
+.avatar-wrap{width:90px;height:90px;border-radius:50%;margin:0 auto 1.2rem;position:relative}
+.avatar-wrap::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));z-index:0;opacity:0;transition:opacity 0.4s}
+.team-card:hover .avatar-wrap::before{opacity:1}
+.avatar-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-family:var(--heading-font);font-size:1.8rem;font-weight:800;color:#fff;position:relative;z-index:1}
+.member-name{font-family:var(--heading-font);font-size:1.1rem;font-weight:700;margin-bottom:0.3rem}
+.member-role{font-size:0.8rem;color:var(--primary2);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.8rem}
+.member-bio{color:var(--text2);font-size:0.88rem;line-height:1.6;margin-bottom:1rem}
+.member-contrib{font-size:0.8rem;color:var(--accent2);background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:99px;padding:0.3rem 0.8rem;display:inline-block}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:center;justify-content:center;padding:2rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius2);padding:3rem;max-width:500px;width:100%;position:relative;animation:modalIn 0.3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-close{position:absolute;top:1rem;left:1rem;background:var(--surface2);border:none;color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background 0.3s}
+.modal-close:hover{background:var(--surface2)}
+.modal-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:#fff;margin:0 auto 1.5rem;box-shadow:0 8px 25px var(--glow)}
+.modal-name{font-family:var(--heading-font);font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:0.3rem}
+.modal-role{font-size:0.85rem;color:var(--primary2);text-align:center;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.06em}
+.modal-body{color:var(--text2);font-size:0.95rem;line-height:1.8;text-align:center}
+
+/* CONTACT */
+#contact{background:var(--bg2)}
+.contact-wrap{max-width:640px;margin:0 auto}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;font-size:0.85rem;font-weight:600;color:var(--text2);margin-bottom:0.5rem;letter-spacing:0.04em}
+.form-group input,.form-group textarea{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:0.85rem 1.2rem;color:var(--text);font-family:var(--body-font);font-size:0.95rem;transition:all 0.3s;resize:vertical}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);background:var(--surface2);box-shadow:0 0 0 4px rgba(99,102,241,0.1)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--text3)}
+.form-group textarea{min-height:130px}
+.field-error{color:#f87171;font-size:0.8rem;margin-top:0.4rem;display:none}
+.field-error.show{display:block}
+.form-group.error input,.form-group.error textarea{border-color:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,0.1)}
+.form-group.success input,.form-group.success textarea{border-color:#34d399}
+.success-msg{display:none;text-align:center;padding:2rem;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:var(--radius2)}
+.success-msg.show{display:block;animation:fadeUp 0.5s ease}
+.success-icon{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#34d399,#06b6d4);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.success-icon svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2.5}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 2rem 2rem;text-align:center}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-logo{font-family:var(--heading-font);font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;margin-bottom:1rem}
+.footer-social{display:flex;gap:1rem;justify-content:center;margin:1.5rem 0}
+.social-link{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all 0.3s;text-decoration:none}
+.social-link svg{width:18px;height:18px;stroke:var(--text2);fill:none;stroke-width:2;transition:stroke 0.3s}
+.social-link:hover{background:linear-gradient(135deg,var(--primary),var(--accent));border-color:transparent;transform:translateY(-3px)}
+.social-link:hover svg{stroke:#fff}
+.footer-copy{color:var(--text3);font-size:0.85rem}
+.footer-email{color:var(--primary2);text-decoration:none;font-size:0.9rem;margin-bottom:0.5rem;display:block}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .problem-grid{grid-template-columns:1fr 1fr}
+  .value-grid{grid-template-columns:1fr 1fr}
+  #solution .sol-wrap{grid-template-columns:1fr;gap:3rem}
+}
+@media(max-width:768px){
+  section{padding:4rem 1.5rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-stats{gap:2rem}
+  .problem-grid{grid-template-columns:1fr}
+  .value-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .team-grid{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:center}
+  h1.hero-title{font-size:2.8rem}
+}
+@media(prefers-reduced-motion:reduce){.orb,.reveal,.reveal-left,.reveal-right{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
+</style>
+<style id="htmlpub-breakpoint-visibility">@media (max-width: 390px) { .hp-hide-mobile { display: none !important; } }
+@media (min-width: 391px) and (max-width: 768px) { .hp-hide-tablet { display: none !important; } }
+@media (min-width: 769px) { .hp-hide-desktop { display: none !important; } }</style><style>#htmlpub-link-input::placeholder{color:rgba(0,0,0,0.40);}ul,ol{padding:20px;}</style></head>
+<body style="">
+
+<div id="preloader" style="left: 60px; top: 740px;">
+  <div class="preloader-logo" style="">فريق الابتكار</div>
+  <div class="preloader-bar"><div class="preloader-fill" style=""></div></div>
+</div>
+
+<div id="progress-bar"></div>
+
+<button id="back-top" aria-label="العودة للأعلى" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">TIP ⚡</a>
+    <ul class="nav-links">
+      <li><a href="#home" class="active">الرئيسية</a></li>
+      <li><a href="#problem">المشكلة</a></li>
+      <li><a href="#solution">الحل</a></li>
+      <li><a href="#team">الفريق</a></li>
+      <li><a href="#contact">تواصل</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="theme-toggle" aria-label="تبديل المظهر">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <span id="theme-label">مضيء</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="قائمة">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="closeMobile()">الرئيسية</a>
+  <a href="#problem" onclick="closeMobile()">المشكلة</a>
+  <a href="#solution" onclick="closeMobile()">الحل</a>
+  <a href="#team" onclick="closeMobile()">الفريق</a>
+  <a href="#contact" onclick="closeMobile()">تواصل معنا</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid-overlay" style=""></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span></span>
+      منصة التكنولوجيا الرائدة للمستقبل — Leading The Future Of Tech
+    </div>
+    <h1 class="hero-title">
+      نبتكر <span class="grad-text">الغد</span><br>
+      ونبني <span class="grad-text">المستقبل</span>
+    </h1>
+    <p class="hero-sub">
+      We engineer breakthrough solutions that transform industries. Our team of visionaries builds the technology that powers tomorrow — combining Arabic innovation with global ambition.
+      <br><strong>نهندس الحلول التي تغير الصناعات وتصنع المستقبل.</strong>
+    </p>
+    <div class="hero-btns">
+      <a href="#solution" class="btn btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        استكشف الحل — Explore
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        تواصل معنا — Contact
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">مشروع منجز</div></div>
+      <div class="stat"><div class="stat-num">12K</div><div class="stat-label">مستخدم نشط</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-label">رضا العملاء</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">دول عالمية</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" style="">
+  <div class="container">
+    <div style="text-align: center;" class="reveal">
+      <div class="section-tag">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
+        المشكلة — The Problem
+      </div>
+      <h2 class="section-title">العالم يتغير. <span class="grad-text">هل أنت جاهز؟</span></h2>
+      <p class="section-sub">الشركات تعاني من فجوة تقنية حادة بين الحلول المتاحة واحتياجاتها الفعلية — وهذا ما نحل عليه.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="prob-card reveal" style="">
+        <div class="prob-icon" style="">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        </div>
+        <h3>تعقيد التقنيات الحديثة</h3>
+        <p style="">Businesses struggle to adopt modern AI and automation tools without proper integration pathways. التعقيد التقني يعيق النمو ويزيد التكاليف التشغيلية بشكل كبير.</p>
+      </div>
+      <div class="prob-card reveal" style="transition-delay:0.1s">
+        <div class="prob-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <h3>انعدام الحلول المحلية</h3>
+        <p>Existing solutions are built for Western markets and ignore the specific needs of Arabic-speaking businesses. الحلول المتاحة لا تراعي خصوصية السوق العربي وثقافته.</p>
+      </div>
+      <div class="prob-card reveal" style="transition-delay:0.2s">
+        <div class="prob-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg>
+        </div>
+        <h3>الهوة الرقمية المتنامية</h3>
+        <p>SMEs are falling behind as enterprise solutions remain out of reach due to cost and complexity. الشركات الصغيرة لا تملك أدوات المنافسة في عصر البيانات والذكاء الاصطناعي.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution" style="">
+  <div class="container">
+    <div class="sol-wrap">
+      <div class="sol-text reveal-left" style="">
+        <div class="section-tag" style="">
+          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+          الحل — Our Solution
+        </div>
+        <h2 style="">منصة واحدة. <span class="grad-text" style="">إمكانيات لا محدودة.</span></h2>
+        <p style="color: var(--text2); font-size: 1rem; margin-bottom: 1.5rem;">
+          We built an all-in-one platform that bridges the gap — intelligent, bilingual, and designed specifically for the MENA market. منصتنا تجمع الذكاء الاصطناعي بالفهم الثقافي العميق.
+        </p>
+        <ul class="sol-points" style="">
+          <li>ذكاء اصطناعي مدرب على بيانات عربية — AI trained on Arabic data</li>
+          <li>تكامل فوري مع الأنظمة الحالية — Instant integration</li>
+          <li>لوحة تحكم ثنائية اللغة — Bilingual dashboard</li>
+          <li>دعم فني على مدار الساعة — 24/7 support</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" style="">ابدأ الآن — Get Started</a>
+      </div>
+      <div class="sol-mockup reveal-right">
+        <div class="mockup-header">
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+        </div>
+        <div class="mockup-line w80"></div>
+        <div class="mockup-line w60"></div>
+        <div class="mockup-line w90"></div>
+        <div class="mockup-line w40"></div>
+        <div style="height:1px;background:var(--border);margin:1.5rem 0"></div>
+        <div class="mockup-line w60" style="background:linear-gradient(90deg,var(--primary),var(--accent));height:10px"></div>
+        <div class="mockup-bars">
+          <div class="bar" style="height:40%"></div>
+          <div class="bar" style="height:65%;opacity:0.8"></div>
+          <div class="bar" style="height:85%"></div>
+          <div class="bar" style="height:55%;opacity:0.8"></div>
+          <div class="bar" style="height:95%"></div>
+          <div class="bar" style="height:70%;opacity:0.8"></div>
+          <div class="bar" style="height:80%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:1rem;color:var(--text3);font-size:0.75rem">
+          <span>النمو الشهري</span>
+          <span style="color:var(--accent2);font-weight:600">+127%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE -->
+<section id="value">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <div class="section-tag">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        لماذا نحن — Why Us
+      </div>
+      <h2 class="section-title">القيمة التي <span class="grad-text">نقدمها</span></h2>
+      <p class="section-sub">Three pillars that set us apart from every alternative. ثلاثة محاور تجعلنا الخيار الأمثل لمستقبلك الرقمي.</p>
+    </div>
+    <div class="value-grid">
+      <div class="val-card reveal">
+        <div class="val-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+        </div>
+        <h3>سرعة لا مثيل لها — Lightning Speed</h3>
+        <p style="color:var(--text2);font-size:0.9rem">Our platform deploys in minutes, not months. معالجة البيانات في أجزاء من الثانية — 10x faster than legacy systems. نتيجة فورية، لا انتظار.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.15s">
+        <div class="val-icon-wrap" style="background:linear-gradient(135deg,var(--pink),var(--primary))">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <h3>أمان من الدرجة الأولى — Enterprise Security</h3>
+        <p style="color:var(--text2);font-size:0.9rem">Bank-grade encryption with full GDPR + Saudi PDPL compliance. بياناتك محمية بأعلى معايير التشفير الدولية. لا تنازل في الأمن.</p>
+      </div>
+      <div class="val-card reveal" style="transition-delay:0.3s">
+        <div class="val-icon-wrap" style="background:linear-gradient(135deg,var(--accent),var(--primary))">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </div>
+        <h3>رؤى ذكية — AI-Powered Insights</h3>
+        <p style="color:var(--text2);font-size:0.9rem">Real-time analytics with predictive intelligence built in. تحليلات فورية وتوقعات ذكية مبنية على الذكاء الاصطناعي لقرارات أفضل.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag" style="margin:0 auto 1.5rem">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg>
+        فريقنا — Our Team
+      </div>
+      <h2 class="section-title">العقول التي <span class="grad-text">تبني المستقبل</span></h2>
+      <p class="section-sub">A diverse team of engineers, designers, and innovators united by one mission. عقول متنوعة تجمعها رسالة واحدة.</p>
+    </div>
+    <div class="team-grid" id="teamGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <div class="section-tag">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        تواصل — Contact
+      </div>
+      <h2 class="section-title">هل أنت <span class="grad-text">جاهز للانطلاق؟</span></h2>
+      <p class="section-sub">Tell us about your vision. أخبرنا عن رؤيتك وسنتواصل معك خلال 24 ساعة.</p>
+    </div>
+    <div class="contact-wrap reveal">
+      <form name="team-innovation-contact" data-success-message="شكراً! تم استلام رسالتك وسنتواصل معك قريباً." id="contactForm">
+        <div class="form-group" id="fg-name">
+          <label for="f-name">الاسم الكامل — Full Name</label>
+          <input type="text" id="f-name" name="full_name" placeholder="أحمد العمري / Ahmed Al-Omari">
+          <div class="field-error" id="err-name">الرجاء إدخال اسمك — Please enter your name</div>
+        </div>
+        <div class="form-group" id="fg-email">
+          <label for="f-email">البريد الإلكتروني — Email Address</label>
+          <input type="email" id="f-email" name="email_address" placeholder="ahmed@startup.com">
+          <div class="field-error" id="err-email">بريد إلكتروني غير صالح — Invalid email format</div>
+        </div>
+        <div class="form-group" id="fg-msg">
+          <label for="f-msg">رسالتك — Your Message</label>
+          <textarea id="f-msg" name="message" placeholder="أخبرنا عن مشروعك... Tell us about your project..."></textarea>
+          <div class="field-error" id="err-msg">يجب أن تكون الرسالة 20 حرفاً على الأقل — Minimum 20 characters</div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          أرسل الرسالة — Send Message
+        </button>
+      </form>
+      <div class="success-msg" id="successMsg">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-family:var(--heading-font);margin-bottom:0.5rem">تم الإرسال بنجاح!</h3>
+        <p style="color:var(--text2)">Message sent successfully! سنتواصل معك في أقرب وقت ممكن.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Team Innovation Portfolio ⚡</div>
+    <p style="color:var(--text3);font-size:0.85rem;margin-bottom:1rem">
+      Bridging innovation and culture — جسر الابتكار والثقافة
+    </p>
+    <a href="/cdn-cgi/l/email-protection#f39b969f9f9cb38796929e9a9d9d9c8592879a9c9ddd9a9c" class="footer-email"><span class="__cf_email__" data-cfemail="8ce4e9e0e0e3ccf8e9ede1e5e2e2e3faedf8e5e3e2a2e5e3">[email&#160;protected]</span></a>
+    <div class="footer-social">
+      <a href="#" class="social-link" aria-label="Twitter/X">
+        <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"></path></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+    </div>
+    <p class="footer-copy">© 2025 Team Innovation Portfolio. All rights reserved. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="إغلاق">✕</button>
+    <div class="modal-avatar" id="modalAvatar"></div>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-role" id="modalRole"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const teamData=[
+  {name:"سارة الرشيد",nameEn:"Sara Al-Rashid",role:"CEO & Co-Founder",bio:"قادت شركتين ناشئتين لتحقيق 10M$ في الإيرادات. Visionary leader with 10+ years in deep tech and MENA markets.",contrib:"رؤية استراتيجية — Product Vision",detail:"Sara holds an MBA from INSEAD and a BSc in Computer Science from KAUST. She previously built two AI startups acquired by regional tech giants.",initials:"سا"},
+  {name:"محمد التميمي",nameEn:"Mohammed Al-Tamimi",role:"CTO & Lead Engineer",bio:"مهندس برمجيات بخبرة 8 سنوات في بناء منصات SaaS تخدم ملايين المستخدمين حول العالم.",contrib:"البنية التقنية — Technical Architecture",detail:"Mohammed is a full-stack architect with expertise in distributed systems, ML pipelines, and real-time data infrastructure. Contributor to 15+ open source projects.",initials:"مح"},
+  {name:"Lena Müller",nameEn:"Lena Müller",role:"Head of Design & UX",bio:"مصممة تجربة مستخدم حاصلة على جائزة Red Dot لتصميم منتجات تجمع بين الجمال والوظيفية.",contrib:"تجربة المستخدم — UX/UI Design",detail:"Lena brings a human-centered design philosophy from her work with top European agencies. She specializes in bilingual interface design and accessibility-first systems.",initials:"LM"},
+  {name:"خالد العمري",nameEn:"Khaled Al-Omari",role:"AI Research Lead",bio:"باحث في الذكاء الاصطناعي مع 5 أبحاث محكّمة في معالجة اللغة الطبيعية للغة العربية.",contrib:"أبحاث الذكاء الاصطناعي — AI R&D",detail:"Khaled specializes in Arabic NLP and LLM fine-tuning. His research has been cited over 200 times and presented at NeurIPS and ACL conferences.",initials:"خا"},
+  {name:"Aisha Johnson",nameEn:"Aisha Johnson",role:"Head of Growth",bio:"خبيرة تسويق رقمي أنجحت مسيرات تسويقية حققت نمواً بنسبة 400% لشركات B2B في السوق الخليجي.",contrib:"النمو والتسويق — Growth & GTM",detail:"Aisha combines data-driven marketing with deep cultural insight across GCC markets. She previously led growth at two Series B startups.",initials:"AJ"},
+  {name:"يوسف النجار",nameEn:"Yusuf Al-Najjar",role:"DevOps & Infrastructure",bio:"مهندس البنية التحتية السحابية، يضمن أن المنصة تعمل بنسبة 99.9% من الوقت بكفاءة تامة.",contrib:"البنية السحابية — Cloud & DevOps",detail:"Yusuf architects multi-region cloud deployments on AWS and Azure. He reduced infrastructure costs by 60% while achieving 5-nines uptime at scale.",initials:"يو"}
+];
+
+function renderTeam(){
+  const grid=document.getElementById('teamGrid');
+  teamData.forEach((m,i)=>{
+    const c=document.createElement('div');
+    c.className='team-card reveal';
+    c.style.transitionDelay=(i*0.1)+'s';
+    c.innerHTML=`<div class="avatar-wrap"><div class="avatar-inner">${m.initials}</div></div><div class="member-name">${m.name}</div><div class="member-role">${m.role}</div><div class="member-bio">${m.bio}</div><div class="member-contrib">${m.contrib}</div>`;
+    c.addEventListener('click',()=>openModal(m));
+    grid.appendChild(c);
+  });
+}
+
+function openModal(m){
+  document.getElementById('modalAvatar').textContent=m.initials;
+  document.getElementById('modalName').textContent=m.name+(m.nameEn&&m.name!==m.nameEn?' — '+m.nameEn:'');
+  document.getElementById('modalRole').textContent=m.role;
+  document.getElementById('modalBody').textContent=m.detail;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+document.getElementById('modalClose').addEventListener('click',()=>{
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+});
+document.getElementById('modalOverlay').addEventListener('click',e=>{
+  if(e.target===e.currentTarget){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+});
+
+/* PRELOADER */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('preloader').classList.add('hidden');},1800);
+});
+
+/* SCROLL PROGRESS */
+window.addEventListener('scroll',()=>{
+  const p=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
+  document.getElementById('progress-bar').style.width=p+'%';
+  const nav=document.getElementById('navbar');
+  if(window.scrollY>60)nav.classList.add('scrolled');else nav.classList.remove('scrolled');
+  document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  updateActiveLink();
+});
+
+/* ACTIVE LINK */
+function updateActiveLink(){
+  const sects=['home','problem','solution','value','team','contact'];
+  let current='home';
+  sects.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&window.scrollY>=el.offsetTop-200)current=id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+  });
+}
+
+/* SCROLL REVEAL */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+function initReveal(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));}
+
+/* HAMBURGER */
+document.getElementById('hamburger').addEventListener('click',function(){
+  this.classList.toggle('active');
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.body.style.overflow=document.getElementById('mobileMenu').classList.contains('open')?'hidden':'';
+});
+function closeMobile(){
+  document.getElementById('hamburger').classList.remove('active');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* THEME TOGGLE */
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+  document.body.classList.toggle('light-mode');
+  const isLight=document.body.classList.contains('light-mode');
+  document.getElementById('theme-label').textContent=isLight?'مظلم':'مضيء';
+});
+
+/* FORM VALIDATION */
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  let valid=true;
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const msg=document.getElementById('f-msg').value.trim();
+  const emailRx=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  ['fg-name','fg-email','fg-msg'].forEach(id=>{
+    document.getElementById(id).classList.remove('error','success');
+    document.getElementById('err-'+id.replace('fg-','')).classList.remove('show');
+  });
+
+  if(!name){document.getElementById('fg-name').classList.add('error');document.getElementById('err-name').classList.add('show');valid=false;}
+  else document.getElementById('fg-name').classList.add('success');
+
+  if(!email||!emailRx.test(email)){document.getElementById('fg-email').classList.add('error');document.getElementById('err-email').classList.add('show');valid=false;}
+  else document.getElementById('fg-email').classList.add('success');
+
+  if(msg.length<20){document.getElementById('fg-msg').classList.add('error');document.getElementById('err-msg').classList.add('show');valid=false;}
+  else document.getElementById('fg-msg').classList.add('success');
+
+  if(valid){
+    const submissions=JSON.parse(localStorage.getItem('tip_submissions')||'[]');
+    submissions.push({name,email,msg,time:new Date().toISOString()});
+    localStorage.setItem('tip_submissions',JSON.stringify(submissions));
+    this.style.display='none';
+    document.getElementById('successMsg').classList.add('show');
+  }
+});
+
+renderTeam();
+initReveal();
+</script>
+
+
+</body></html>
